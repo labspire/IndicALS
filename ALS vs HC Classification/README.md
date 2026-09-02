@@ -1,86 +1,80 @@
 # ALS Speech Dataset – Technical Validation Experiments
 
-This repository contains the experimental code used for the technical validation of an ALS speech dataset.
+This repository contains the official codebase for the technical validation experiments reported on the multi-lingual Indian ALS speech dataset. 
 
-## Experiments
+It provides end-to-end processing pipelines for subject-independent 5-fold cross-validation to evaluate binary classification between **ALS patients** and **Healthy Controls (HC)** across multiple speech tasks.
 
-The repository is organized into three speech-task experiments:
+---
 
-- DDK – diadochokinetic speech
-- SUV – sustained vowel tasks, excluding fricatives
-- SUF – sustained fricative tasks
+## 🧪 Speech Tasks & Experiments
 
-The experiments perform subject-independent 5-fold cross-validation for binary ALS vs healthy control (HC) classification.
+The codebase is organized by distinct acoustic protocol tasks:
 
-## Methodology
+* **DDK**: Diadochokinetic speech tasks (`/experiments/DDK`)
+* **SUV**: Sustained vowel tasks, excluding fricatives (`/experiments/SUV`)
+* **SUF**: Sustained fricative tasks (`/experiments/SUF`)
 
-The experimental pipeline includes:
+---
 
-1. Audio resampling to 8 kHz.
-2. Extraction of task-specific speech segments.
-3. Segmentation into 2-second chunks with 50% overlap.
-4. Zero-padding of shorter chunks.
-5. Zero-mean/unit-variance normalization.
-6. 20 ms frame length with 50% overlap.
-7. ConvLSTM-based binary classification.
-8. Subject-independent 5-fold cross-validation.
-9. Chunk-level prediction followed by file-level majority voting.
+## ⚙️ Experimental Methodology & Pipeline
 
-## Model
+1. **Preprocessing & Resampling**: Raw audio files are resampled to **8 kHz**.
+2. **Speech Segmentation**: Task-specific segments are isolated using temporal annotations and segmented into **2-second chunks** with **50% overlap** (shorter chunks are zero-padded).
+3. **Normalization**: Signal amplitudes undergo zero-mean / unit-variance normalization.
+4. **Framing**: Framing is performed using a **20 ms window** with **50% overlap**.
+5. **Feature Representation & Modeling**: Spatial-temporal sequence processing via a **1D ConvLSTM** network.
+6. **Cross-Validation**: Subject-independent 5-fold cross-validation to prevent data leakage across subjects.
+7. **Evaluation**: Chunk-level predictions are aggregated using **file-level majority voting** to yield final subject classifications.
 
-The ConvLSTM architecture contains:
+---
 
-- Conv1D: 256 filters, kernel size 120
-- ReLU, batch normalization, and max pooling
-- Conv1D: 30 filters, kernel size 20
-- ReLU and max pooling
-- Three stacked unidirectional LSTM layers with 150 hidden units each
-- Fully connected layer with 2 output classes
+## 🧠 Model Architecture
 
-## Training
+The binary classification model uses a custom 1D ConvLSTM architecture:
 
-The experimental scripts use:
+| Layer | Specifications / Configuration |
+| :--- | :--- |
+| **Conv1D (1)** | 256 filters, Kernel size: 120, ReLU, Batch Normalization, Max Pooling |
+| **Conv1D (2)** | 30 filters, Kernel size: 20, ReLU, Max Pooling |
+| **Recurrent** | 3 Stacked Unidirectional LSTM layers (150 hidden units each) |
+| **Output** | Fully Connected (FC) layer with 2 output classes (ALS vs. HC) |
 
-- Optimizer: Adam
-- Learning rate: 0.001
-- Batch size: 4
-- Maximum epochs: 10
-- Loss: Cross-entropy
-- Subject-independent 5-fold cross-validation
+---
 
-## Data
+## 🏋️ Training Parameters
 
-The clinical speech data and subject split spreadsheets are **not included in this repository** because they are not intended for public redistribution.
+The default hyperparameter configuration used across experiments:
 
-Obtain the data only through the authorized dataset/data-access procedure.
+* **Optimizer**: Adam (`lr = 0.001`)
+* **Batch Size**: `4`
+* **Max Epochs**: `10`
+* **Loss Function**: Cross-Entropy Loss
+* **Validation Strategy**: 5-Fold Subject-Independent Cross-Validation
 
-Expected local organization should be configured by the user in the experiment scripts or through command-line arguments/environment variables.
+---
 
-## Running an experiment
+## 🔒 Data Access & Setup Guidelines
 
-Example:
+
+To run these experiments:
+1. Request and obtain access through the official dataset authorization process.
+2. Organise your local directory paths to point to:
+   * **ALS** audio directory
+   * **HC** audio directory
+   * **ALS 5-Fold Split** spreadsheet (`ALS_5fold_split.xlsx`)
+   * **HC 5-Fold Split** spreadsheet (`HC_5fold_split.xlsx`)
+
+
+## 🚀 Running Experiments
+
+Run the technical validation script for your desired task from the root directory:
 
 ```bash
+# Run DDK experiment
 python experiments/DDK/train_ddk.py
+
+# Run Sustained Vowel (SUV) experiment
 python experiments/SUV/train_suv.py
+
+# Run Sustained Fricative (SUF) experiment
 python experiments/SUF/train_suf.py
-```
-
-Before running, configure the paths to:
-
-- ALS audio data
-- HC audio data
-- ALS 5-fold subject split
-- HC 5-fold subject split
-
-Do not commit private server paths, patient data, split spreadsheets, model checkpoints, or logs containing sensitive information.
-
-## Results
-
-Aggregate results can be placed in `results/`. Raw experiment outputs and model checkpoints should normally remain outside version control.
-
-## Reproducibility
-
-For reproducibility, record the Python version, package versions, random seeds, hardware, and final training configuration used for each experiment.
-
-
