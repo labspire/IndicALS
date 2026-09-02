@@ -83,6 +83,4 @@ Aggregate results can be placed in `results/`. Raw experiment outputs and model 
 
 For reproducibility, record the Python version, package versions, random seeds, hardware, and final training configuration used for each experiment.
 
-## Important implementation note
 
-Before publication of this repository, ensure that the implementation and manuscript describe the same training procedure. In particular, verify the manuscript's statements about L2 weight decay and early stopping against the final code.
