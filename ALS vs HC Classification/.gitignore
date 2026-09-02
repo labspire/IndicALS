@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data / clinical files
+data/raw/
+data/processed/
+*.wav
+*.flac
+*.mp3
+*.txt
+*.xlsx
+*.xls
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+
+# Experiment outputs
+results_*/
+logs/
+checkpoints/
+*.log
+
+# Local/server configuration
+.env
+config.local.*
