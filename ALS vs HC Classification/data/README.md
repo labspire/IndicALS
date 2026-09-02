@@ -1,9 +1,15 @@
-Please use the official published dataset provided in this repository structure to accurately replicate the results reported in the paper.
+# IndicALS Dataset & Reproduction Guide
 
-This dataset contains raw speech audio recordings and associated split metadata used for detecting ALS and motor speech disorders.
+This repository contains the official dataset structure and cross-validation splits to accurately replicate the baseline experiments and results reported in our paper.
 
-1. Directory Tree Structure
-The dataset is organized hierarchically by subject ID (e.g., PTSPASPIRE001), with tasks partitioned into subdirectories corresponding to specific acoustic protocols (DDK, IMG, SUF, SUV):
+The dataset includes raw speech audio recordings along with forced-alignment temporal annotations designed for automatic detection and severity classification of Amyotrophic Lateral Sclerosis (ALS) and motor speech disorders.
+
+
+# 📁 Repository Structure
+
+The dataset is organized hierarchically by group (`ALS` / `HC`), subject ID (e.g., `PTSPASPIRE001`), and acoustic task protocols (`DDK`, `IMG`, `SUF`, `SUV`):
+
+```text
 publication_data/
 ├── ALS/
 │   ├── PTSPASPIRE001/
