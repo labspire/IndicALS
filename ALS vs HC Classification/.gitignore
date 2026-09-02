@@ -20,8 +20,7 @@ data/processed/
 *.flac
 *.mp3
 *.txt
-*.xlsx
-*.xls
+    
 
 # Model checkpoints
 *.pt
